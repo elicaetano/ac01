@@ -19,7 +19,7 @@ def index():
     db.session.add(post)
     db.session.commit()
     posts = Post.query.order_by(Post.date_posted.desc()).all()
-    return render_template('index.html', posts=posts)
+    return render_template('formulario.html', posts=posts)
 
 
 if __name__ == '__main__':
