@@ -1,45 +1,27 @@
+
 import os
-from flask import Flask, request, render_template
-from flaskext.mysql import MySQL
-mysql = MySQL()
+from flask import Flask
+from flask import request, render_template
+from flask_sqlalchemy import SQLAlchemy
+from config import BaseConfig
+
 app = Flask(__name__)
+app.config.from_object(BaseConfig)
+db = SQLAlchemy(app)
 
-app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'mudar123'
-app.config['MYSQL_DATABASE_DB'] = 'teste'
-app.config['MYSQL_DATABASE_HOST'] = '172.17.0.0'
-mysql.init_app(app)
+from models import *
 
-@app.route('/')
-def main():
-    return render_template('formulario.html')
-
-
-@app.route('/gravar', methods=['POST', 'GET'])
-def gravar():
-    nome = request.form['nome']
-    cpf = request.form['cpf']
-    endereco = request.form['endereco']
-
-    if nome and cpf and endereco:
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor.execute('insert into tbl_user (nome,cpf,endereco) VALUES (%s, %s, %s)', (nome, cpf,endereco))
-        conn.commit()
-    return render_template('formulario.html')
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+    text = request.form['text']
+    post = Post(text)
+    db.session.add(post)
+    db.session.commit()
+    posts = Post.query.order_by(Post.date_posted.desc()).all()
+    return render_template('index.html', posts=posts)
 
 
-@app.route('/listar', methods=['POST', 'GET'])
-def listar():
-    conn = mysql.connect()
-    cursor = conn.cursor()
-    cursor.execute('select nome,cpf, endereco from tbl_user')
-    data = cursor.fetchall()
-    conn.commit()
-    return render_template('lista.html', datas=data)
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5008))
     app.run(host='0.0.0.0', port=port)
-
