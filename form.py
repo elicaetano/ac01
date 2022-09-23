@@ -1,3 +1,4 @@
+# app.py
 
 import os
 from flask import Flask
@@ -5,21 +6,26 @@ from flask import request, render_template
 from flask_sqlalchemy import SQLAlchemy
 from config import BaseConfig
 
+
 app = Flask(__name__)
 app.config.from_object(BaseConfig)
 db = SQLAlchemy(app)
 
+
 from models import *
+
 
 @app.route('/', methods=['GET', 'POST'])
 def formulario():
     if request.method == 'POST':
-    text = request.form['text']
-    post = Post(text)
-    db.session.add(post)
-    db.session.commit()
+        text = request.form['text']
+        post = Post(text)
+        db.session.add(post)
+        db.session.commit()
     posts = Post.query.order_by(Post.date_posted.desc()).all()
     return render_template('formulario.html', posts=posts)
+
+
 
 
 if __name__ == '__main__':
