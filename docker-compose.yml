@@ -16,4 +16,4 @@ services:
    - POSTGRES_USER=sis_web
    - POSTGRES_PASSWORD=123
   ports:
-   - "5432:5432"
+   - "5008:5008"
