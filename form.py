@@ -10,12 +10,11 @@ mysql = MySQL()
 app = Flask(__name__)
 
 # MySQL configurations
-# MySQL configurations
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'mudar123'
-app.config['MYSQL_DATABASE_DB'] = 'teste'
+app.config['MYSQL_DATABASE_DB'] = 'produto'
 app.config['MYSQL_DATABASE_HOST'] = 'db'
-#app.config['MYSQL_DATABASE_HOST'] = '172.17.0.2'
+#app.config['DB_SERVICE'] = '172.17.0.16'
 mysql.init_app(app)
 
 @app.route('/')
@@ -24,24 +23,24 @@ def main():
 
 @app.route('/gravar', methods=['POST','GET'])
 def gravar():
-  nome = request.form['nome']
-  preco = request.form['preco']
-  categoria = request.form['categoria']
-  if nome and preco and categoria:
-    conn = mysql.connect()
-    cursor = conn.cursor()
-    cursor.execute('insert into tbl_produto (nome,preco,categoria) VALUES (%s, %s, %s)', (nome, preco, categoria))
-    conn.commit()
-  return render_template('formulario.html')
+    nome = request.form['nome']
+    preco = request.form['preco']
+    categoria = request.form['categoria']
+    if nome and preco and categoria:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute('insert into produto (nome,preco,categoria) VALUES (%s, %s, %s)', (nome, preco, categoria))
+        conn.commit()
+    return render_template('formulario.html')
 
 @app.route('/listar', methods=['GET', 'POST'])
 def listar():
-  conn = mysql.connect()
-  cursor = conn.cursor()
-  cursor.execute('select nome, preco, categoria from tbl_produto')
-  data = cursor.fetchall() 
-  conn.commit()
-  return render_template('lista.html', datas=data)
+    conn = mysql.connect()
+    cursor = conn.cursor() #abre uma seção dentro da conexão
+    cursor.execute('select nome, preco, categoria FROM produto')
+    data = cursor.fetchall() #recuperar registros
+    conn.commit()
+    return render_template('lista.html', datas=data)
 
 
 
