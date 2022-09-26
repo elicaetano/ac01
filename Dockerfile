@@ -1,11 +1,8 @@
 FROM python:3.7-slim
-RUN python -m pip install --upgrade pip
 RUN pip install flask
-RUN pip install flask_sqlalchemy
-RUN pip install psycopg2-binary
-RUN mkdir templates
+RUN pip install flask-mysql
+RUN mkdir tampletes
 COPY form.py /app.py
-COPY templates/*  /templates/
-RUN chmod -R a+rwx templates
+COPY tampletes/* /tampletes/
+RUN chmod -R a+rwx tampletes
 CMD ["python","app.py"]
-
