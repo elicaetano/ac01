@@ -37,7 +37,7 @@ def gravar():
 def listar():
     conn = mysql.connect()
     cursor = conn.cursor() #abre uma seção dentro da conexão
-    cursor.execute('select nome, preco, categoria FROM produto')
+    cursor.execute('select nome, preco, categoria from tbl_produto')
     data = cursor.fetchall() #recuperar registros
     conn.commit()
     return render_template('lista.html', datas=data)
