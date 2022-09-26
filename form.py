@@ -14,6 +14,7 @@ app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'mudar123'
 app.config['MYSQL_DATABASE_DB'] = 'produto'
 app.config['MYSQL_DATABASE_HOST'] = 'db'
+app.config['DB_SERVICE'] = '172.17.0.16'
 mysql.init_app(app)
 
 @app.route('/')
