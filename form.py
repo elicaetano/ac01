@@ -33,7 +33,7 @@ def gravar():
         conn.commit()
     return render_template('formulario.html')
 
-@app.route('/listar', methods=['GET', 'POST'])
+@app.route('/listar', methods=['POST', 'GET'])
 def listar():
     conn = mysql.connect()
     cursor = conn.cursor() #abre uma seção dentro da conexão
